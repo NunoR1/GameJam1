@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 # common enemies
 enemies = {"Bear": {"health": 20, "damage": 5},
            "Wolf": {"health": 20, "damage": 5},
@@ -9,5 +7,4 @@ enemies = {"Bear": {"health": 20, "damage": 5},
            }
 
 elite_enemies = {}
- 
->>>>>>> Stashed changes
+
