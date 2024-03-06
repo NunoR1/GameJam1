@@ -26,7 +26,7 @@ def game_start():
     return player_name
 
 
-# player_name = game_start()
+player_name = game_start()
 
 def inventory():
     main_hand = []
@@ -124,9 +124,10 @@ def game_over():
     sleep(2)
     print("You have met a terrible fate.")
     restart = input("Restart?\nYes         No\n--").lower()
+    if restart == "yes":
+        main()
+    else:
+        pass
 
 
-
-# main()    
-
-game_over()
+main()    
