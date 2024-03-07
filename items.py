@@ -29,7 +29,7 @@ spell_book = {"name":"Spellbook", "offense_spell_name":"Blast", "offense_spell_d
 
 books = {"Spellbook":spell_book}
 
-Offhand = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower, "Spellbook":spell_book}
+offhand = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower, "Spellbook":spell_book}
 
 # Consumables
 
