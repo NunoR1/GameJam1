@@ -39,3 +39,5 @@ item_lightningWand = {"name":"Wand of Lightnging", "effect":"damage", "strength"
 item_crossbow = {"name":"Crossbow", "effect":"damage", "strength":12, "is_magic": False, "gold_value":14, "type":"consumable"}
 
 consumables = {"Healing Potion":item_healpotion, "Mana Potion":item_manapotion, "Lightning Wand":item_lightningWand, "Crossbow":item_crossbow}
+
+item_pools = {"weapons":weapons, "armors":armors, offhand:"offhand", "consumables":consumables}
