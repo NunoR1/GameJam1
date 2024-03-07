@@ -4,6 +4,8 @@ import enemies
 import items
 import random
 
+rooms_completed = 0
+
 room_types = ["monster", "merchant", "floor_item", "trial", "boss", "campfire",]
 
 def monster_room():

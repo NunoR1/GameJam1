@@ -10,11 +10,12 @@ weapon_magicsword = {"name":"Magic Sword", "attack":7, "gold_value":30, "type":"
 weapons = {"Old Sword":weapon_oldsword, "Sword":weapon_goodsword, "Staff":weapon_staff, "Axe":weapon_axe, "Spear":weapon_spear, "Greatsword":weapon_greatsword, "Magic Sword":weapon_magicsword}
 
 # Armor
+armor_cloth = {"name":"Cloth Armor", "hp_buff": 5, "gold_value":5, "type":"armor"}
 armor_leather = {"name":"Leather Armor", "hp_buff": 10, "gold_value":15, "type":"armor"}
-armor_tabbard = {"name":"Tabbard", "hp_buff": 20, "gold_value":25, "type":"armor"}
+armor_tabard = {"name":"Tabard", "hp_buff": 20, "gold_value":25, "type":"armor"}
 armor_mail = {"name":"Mail Armor", "hp_buff": 35, "gold_value":40, "type":"armor"}
 
-armors = {"Leather Armor":armor_leather, "Tabbard":armor_tabbard, "Mail Armor":armor_mail}
+armors = {"Cloth Armor":armor_cloth, "Leather Armor":armor_leather, "Tabard":armor_tabard, "Mail Armor":armor_mail}
 
 # Shields
 shield_plank = {"name":"Plank Shield", "hp_buff": 5, "gold_value":7, "type":"shield"}
