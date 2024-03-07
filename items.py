@@ -25,7 +25,7 @@ shield_tower = {"name":"Tower Shield", "hp_buff": 20, "gold_value":25, "type":"s
 # Spellbooks
 spell_book = {"name":"Spellbook", "offense_spell_name":"Blast", "offense_spell_damage":6, "offense_spell_cost":3, "defense_spell_name":"Heal", "defense_spell_healing":4, "defense_spell_cost": 3, "gold_value":30, "type":"spellbook"}
 
-Offhand = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower, "Spellbook":spell_book}
+offhand = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower, "Spellbook":spell_book}
 
 # Consumables
 
