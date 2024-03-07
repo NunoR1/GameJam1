@@ -27,6 +27,8 @@ shields = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shie
 # Spellbooks
 spell_book = {"name":"Spellbook", "offense_spell_name":"Blast", "offense_spell_damage":6, "offense_spell_cost":3, "defense_spell_name":"Heal", "defense_spell_healing":4, "defense_spell_cost": 3, "gold_value":30, "type":"spellbook"}
 
+books = {"Spellbook":spell_book}
+
 # Consumables
 
 item_healpotion = {"name":"Healing Potion", "effect":"health_restore", "strength":10, "is_magic": False, "gold_value":8, "type":"consumable"}
