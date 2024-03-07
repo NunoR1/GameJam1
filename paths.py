@@ -1,0 +1,80 @@
+
+
+
+
+import random
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def path_selection():
+    path_num = random.randit(2,3)
+    if path_num == 2:
+        print("There are two paths in front of you \nTake Left                Take Right")
+    elif path_num == 3:
+        print("There are three paths in front of you \nTake Left   Take Center   Take Right")
