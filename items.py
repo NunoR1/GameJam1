@@ -1,4 +1,3 @@
-import random
 # Weapons
 weapon_oldsword = {"name":"Old Sword", "attack":3, "gold_value":5, "type":"weapon", "magic_mod":1}
 weapon_goodsword = {"name":"Sword", "attack":6, "gold_value":12, "type":"weapon", "magic_mod":1}
