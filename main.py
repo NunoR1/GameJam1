@@ -1,8 +1,9 @@
 from time import sleep
 import random
 from items import weapons, offhand, armors, consumables
+from paths import next_room
 
-player_stats = {"atk":0, "max_hp":10, "cur_hp":10, "max_mana":0, "cur_mana":0, "gold": 0, "atk_up": 0}
+player_stats = {"atk":0, "max_hp":10, "cur_hp":10, "max_mana":20, "cur_mana":0, "gold": 0, "atk_up": 0}
 inventory = {"main_hand": [weapons["Old Sword"]],
 "off_hand": [offhand["Plank Shield"]],
 "armor": [armors["Cloth Armor"]],
@@ -12,7 +13,7 @@ inventory = {"main_hand": [weapons["Old Sword"]],
 
 def main():
     while player_stats["cur_hp"] > 0:
-        print("This is main")
+        next_room()
 
 
 def game_start():
@@ -37,16 +38,15 @@ def game_start():
 
 
 def show_inventory():
-    print(f"""Main Hand: {inventory['main_hand']}
-    Off Hand: {inventory['off_hand']}
-    Armor: {inventory['armor']}
-    Consumables: {inventory['consumables']}
-    Money: {player_stats['gold']}""")
+    print(f"""Main Hand: {inventory['main_hand'["name"]]}
+    Off Hand: {inventory['off_hand'["name"]]}
+    Armor: {inventory['armor'["name"]]}
+    Consumables: {inventory['consumables'["name"]]}
+    Money: {player_stats['gold'["name"]]}""")
 
 
 
 def fight(enemy):
-    print(f"You encounter {enemy}")
     turn_counter = 0
     while enemy["health"] > 0 and player_stats["hp"] > 0:
         
