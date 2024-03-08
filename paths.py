@@ -6,7 +6,8 @@ import random
 
 rooms_completed = 0
 
-room_types = ["monster", "merchant", "floor_item", "trial", "boss", "campfire",]
+room_types = ["monster", "merchant", "treasure", "campfire" "trial", "boss"]
+
 
 def monster_room():
     # encounter a random enemy, win for a reward
@@ -20,9 +21,48 @@ def merchant_room():
     pass
     # encounter a merchant that sells random items
 
-def floor_item_room():
-    pass
-    # choose between three items until you have 3 consumables
+def treasure_room():
+    print("It appears some unfortunate would-be adventurer left some equipment here, perhaps you can find something of use...")
+
+    item_count = random.randint(1,3)
+    for item in range(item_count):
+        found_item = random.choice(items.item_pool)
+        print(f"You found a {found_item["name"]}, shall you take it? (overides current item)")
+        while True:
+            accept = input("Yes/No").lower()
+            if accept == "yes":
+                if found_item["type"] == "weapon":
+                    print(f"You equipped the {found_item["name"]}")
+                    main.inventory["main_hand"] = found_item
+                    break
+                elif found_item["type"] == "armor":
+                    print(f"You equipped the {found_item["name"]}")
+                    main.inventory["armor"] = found_item
+                    break
+                elif found_item["type"] == "shield" or found_item["type"] == "spellbook":
+                    print(f"You equipped the {found_item["name"]}")
+                    main.inventory["off_hand"] = found_item
+                    break
+                elif found_item["type"] == "consumable":
+                    if len(main.inventory["consumables"]) < 3:
+                        print(f"You put the {found_item["name"]} in your bag")
+                        main.inventory["consumables"].append(found_item)
+                        break
+                    else:
+                        print(f"As you shoved the {found_item["name"]} into your pack, you broke your {main.inventory["consumables"][0]["name"]}!")
+                        main.inventory["consumeable"].pop(0)
+                        main.inventory["consumables"].append(found_item)
+                        break
+            elif accept == "no":
+                print(f"You left the {found_item["name"]} behind.")
+                break
+            else:
+                print("Invalid input, try again")
+            print("You found nothing else of value, and set off again towards the dragon's den.")
+            
+
+                    
+
 
 def trial_room():
     # if the player completes a trial, gain a buff
@@ -62,5 +102,48 @@ def campfire_room():
     player_stats["cur_hp"] = player_stats["max_hp"]
     player_stats["cur_mana"] = player_stats["max_mana"]
 
-def room_transition():
-    pass
+room_pool = ["monster", "merchant", "treasure", "campfire"]
+
+def next_room():
+    if rooms_completed == 0:
+        treasure_room()
+    elif rooms_completed <= 9:
+        room_option_1 = random.choice(list(room_pool.keys()))
+        room_option_2 = random.choice(list(room_pool.keys()))
+        print(f"Two roads lie before you, one the left path, you will find a {room_option_1}, on the right path you will find a {room_option_2}, which way do you go?")
+        while True:
+            which_way = input("left or right?")
+            if which_way.lower() == "left":
+                if room_option_1 == "monster":
+                    monster_room()
+                    break
+                elif room_option_1 == "merchant":
+                    merchant_room()
+                    break
+                elif room_option_1 == "treasure":
+                    treasure_room()
+                    break
+                elif room_option_1 == "campfire":
+                    campfire_room()
+                    break
+            elif which_way.lower() == "right":
+                if room_option_2 == "monster":
+                    monster_room()
+                    break
+                elif room_option_2 == "merchant":
+                    merchant_room()
+                    break
+                elif room_option_2 == "treasure":
+                    treasure_room()
+                    break
+                elif room_option_2 == "campfire":
+                    campfire_room()
+                    break
+            else:
+                print(f"{which_way} is not left or right, try again.")
+    elif rooms_completed == 10:
+        trial_room()
+    elif rooms_completed == 11:
+        boss_room()
+
+    rooms_completed += 1
