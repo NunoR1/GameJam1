@@ -1,4 +1,4 @@
-import main
+from game_mechanics import player_stats, fight, merchant, inventory
 import enemies
 import items
 import random
@@ -12,13 +12,13 @@ def monster_room():
     # encounter a random enemy, win for a reward
     monster = random.choice(enemies.enemies.keys())
     print(f"A {monster["name"]}, stands before you. It must be defeated if you wish to complete your quest")
-    main.fight(monster)
+    fight(monster)
     print(f"The{monster["name"]} has been defeated, you gained {monster["gold"]} gold!")
-    main.playerstats["gold"] += monster["gold"]
+    player_stats["gold"] += monster["gold"]
 
 def merchant_room():
     print("You come across a merchant resting by a fire. He turns to you and speaks")
-    main.merchant()
+    merchant()
 
 def treasure_room():
     print("It appears some unfortunate would-be adventurer left some equipment here, perhaps you can find something of use...")
@@ -32,25 +32,25 @@ def treasure_room():
             if accept == "yes":
                 if found_item["type"] == "weapon":
                     print(f"You equipped the {found_item["name"]}")
-                    main.inventory["main_hand"] = found_item
+                    inventory["main_hand"] = found_item
                     break
                 elif found_item["type"] == "armor":
                     print(f"You equipped the {found_item["name"]}")
-                    main.inventory["armor"] = found_item
+                    inventory["armor"] = found_item
                     break
                 elif found_item["type"] == "shield" or found_item["type"] == "spellbook":
                     print(f"You equipped the {found_item["name"]}")
-                    main.inventory["off_hand"] = found_item
+                    inventory["off_hand"] = found_item
                     break
                 elif found_item["type"] == "consumable":
-                    if len(main.inventory["consumables"]) < 3:
+                    if len(inventory["consumables"]) < 3:
                         print(f"You put the {found_item["name"]} in your bag")
-                        main.inventory["consumables"].append(found_item)
+                        inventory["consumables"].append(found_item)
                         break
                     else:
-                        print(f"As you shoved the {found_item["name"]} into your pack, you broke your {main.inventory["consumables"][0]["name"]}!")
-                        main.inventory["consumeable"].pop(0)
-                        main.inventory["consumables"].append(found_item)
+                        print(f"As you shoved the {found_item["name"]} into your pack, you broke your {inventory["consumables"][0]["name"]}!")
+                        inventory["consumeable"].pop(0)
+                        inventory["consumables"].append(found_item)
                         break
             elif accept == "no":
                 print(f"You left the {found_item["name"]} behind.")
@@ -72,10 +72,10 @@ def trial_room():
     if trial_type == "wealth":
         print("The ghost of a long-dead merchant floats before you \"Traveler,\" he says, \"I offer the trial of wealth, carry 55 gold and recieve my boon.\"")
         input("Press any key to commence the trial of wealth")
-        if main.player_stats["gold"] >= 55:
+        if player_stats["gold"] >= 55:
             print("The merchant nods, \"You have passed my test, you may receive my boon. The blessing of life\"")
             print("MAX HP INCREASED")
-            main.player_stats["max_hp"] += 15
+            player_stats["max_hp"] += 15
         else:
             print("The merchant frowns, \"You do not have enough gold, you cannot receive my boon.\"")
     
@@ -83,10 +83,10 @@ def trial_room():
     if trial_type == "vitality":
         print("The ghost of a slain knight floats before you \"Traveler,\" he says, \"I offer the trial of vitality, possess 50 max health and recieve my boon.\"")
         input("Press any key to commence the trial of vitality")
-        if main.player_stats["max_hp"] >= 50:
+        if player_stats["max_hp"] >= 50:
             print("\"You have passed my test, traveler.\" The knight bows his head, \"With the boon of strength, your blow shall strike true. May you succeed where I have failed, slay that monster.\"")
             print("DAMAGE INCREASED")
-            main.player_stats["atk_up"] += 5
+            player_stats["atk_up"] += 5
         else:
             print("\"I apologize,\" the knight says, \"you lack the endurance to receive my blessing.\"")
 
@@ -98,8 +98,8 @@ def campfire_room():
     # restore health and mana
     print("You come across an abandoned campsite, this looks to be a safe place to rest and recover.")
     input("Press any key to continue")
-    main.player_stats["cur_hp"] = main.player_stats["max_hp"]
-    main.player_stats["cur_mana"] = main.player_stats["max_mana"]
+    player_stats["cur_hp"] = player_stats["max_hp"]
+    player_stats["cur_mana"] = player_stats["max_mana"]
 
 room_pool = ["monster", "merchant", "treasure", "campfire"]
 
