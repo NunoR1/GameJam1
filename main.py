@@ -102,22 +102,12 @@ def merchant():
                                     print(
                                         f"You decided to keep {inventory['main_hand'][0]['name']} in your weapon slot.")
 
-                                print(f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']}")
-                            else:
-                                item_replacement = input(f"It seems that you already have {inventory['main_hand'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
-                                if item_replacement.lower() == 'y':
-                                    inventory['main_hand'][0] = purchased_item
-                                    item_purchased = True
-                                    print(f"You have replaced your existing weapon with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
-                                else:
-                                    print(f"You decided to keep {inventory['main_hand'][0]['name']} in your weapon slot.")
                         elif purchased_item['type'] == 'armor':
                             if len(inventory['armor']) < 1:
                                 inventory['armor'].append(purchased_item)
                                 item_purchased = True
                                 print(
                                     f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
-                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']}")
                             else:
                                 item_replacement = input(
                                     f"It seems that you already have {inventory['armor'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
@@ -135,7 +125,6 @@ def merchant():
                                 item_purchased = True
                                 print(
                                     f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
-                                print(f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']}")
                             else:
                                 item_replacement = input(
                                     f"It seems that you already have {inventory['off_hand'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
@@ -170,9 +159,6 @@ def merchant():
                                     print(
                                         f"You decided to keep {inventory['consumables'][0]['name']} in your "
                                         f"consumables slot.")
-                                    print( f"You have replaced your existing off hand with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
-                                else:
-                                    print(f"You decided to keep {inventory['off_hand'][0]['name']} in your Off Hand.")
                     else:
                         print("You don't have enough Gold to purchase that item.")
                 else:
@@ -184,17 +170,6 @@ def merchant():
         print(let, end='')
         sleep(0.05)
     sleep(1)
-    # if item_purchased:
-    #     for let in "\nEnjoy your purchase traveler... wishing that your item serves you well.":
-    #         print(let, end='')
-    #         sleep(0.05)
-    #     sleep(1)
-    # elif not item_purchased:
-    #     for let in "\nCome back anytime.":
-    #         print(let, end='')
-    #         sleep(0.05)
-    #
-    #     sleep(1)
 
 
 def fight(enemy):
