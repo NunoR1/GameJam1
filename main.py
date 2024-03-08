@@ -2,7 +2,7 @@ from time import sleep
 import random
 import items
 
-player_stats = {"atk": 0, "max_hp": 0, "cur_hp": 0, "max_mana": 0, "cur_mana": 0, "gold": 0}
+player_stats = {"atk": 0, "max_hp": 0, "cur_hp": 0, "max_mana": 0, "cur_mana": 0, "gold": 100}
 inventory = {"main_hand": [],
              "off_hand": [],
              "armor": [],
@@ -56,18 +56,14 @@ def merchant():
     print("----------")
 
     current_items = []
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
-    random_item = random.choice(list(items.item_pool))
-    current_items.append(random_item)
+    current_count = 0
+    while current_count != 6:
+        current_count += 1
+        random_item = random.choice(list(items.item_pool))
+        if random_item in current_items:
+            pass
+        else:
+            current_items.append(random_item)
 
     item_num = 0
     for item in current_items:
@@ -76,22 +72,104 @@ def merchant():
 
     print("----------")
 
-    purchase = input("Which # item would you like to buy? (or e to exit) \n--")
+    while True:
+        purchase = input("Which # item would you like to buy? (or e to exit) \n--")
+        if purchase.lower() == 'e':
+            item_purchased = False
+            break
+        else:
+            try:
+                purchase_num = int(purchase) - 1
+                if 0 <= purchase_num < len(current_items):
+                    purchased_item = current_items[purchase_num]
+                    if player_stats['gold'] >= purchased_item['gold_value']:
+                        player_stats['gold'] -= purchased_item['gold_value']
+                        if purchased_item['type'] == 'weapon':
+                            if len(inventory['main_hand']) < 1:
+                                inventory['main_hand'].append(purchased_item)
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['main_hand'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
+                                if item_replacement.lower() == 'y':
+                                    inventory['main_hand'][0] = purchased_item
+                                    item_purchased = True
+                                    print(
+                                        f"You have replaced your existing weapon with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(
+                                        f"You decided to keep {inventory['main_hand'][0]['name']} in your weapon slot.")
 
-    if purchase.lower() == 'e':
-        item_purchased = False
+                        elif purchased_item['type'] == 'armor':
+                            if len(inventory['armor']) < 1:
+                                inventory['armor'].append(purchased_item)
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['armor'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
+                                if item_replacement.lower() == 'y':
+                                    inventory['armor'][0] = purchased_item
+                                    item_purchased = True
+                                    print(
+                                        f"You have replaced your existing armor with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(f"You decided to keep {inventory['armor'][0]['name']} in your armor slot.")
 
-    # if item_purchased:
-    #     for let in "\nEnjoy your purchase traveler... wishing that your item serves you well.":
-    #         print(let, end='')
-    #         sleep(0.05)
-    #     sleep(1)
-    # elif not item_purchased:
-    #     for let in "\nCome back anytime.":
-    #         print(let, end='')
-    #         sleep(0.05)
-    #
-    #     sleep(1)
+                        elif purchased_item['type'] == 'shield' or purchased_item['type'] == 'spellbook':
+                            if len(inventory['off_hand']) < 1:
+                                inventory['off_hand'].append(purchased_item)
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['off_hand'][0]['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)")
+                                if item_replacement.lower() == 'y':
+                                    inventory['off_hand'][0] = purchased_item
+                                    item_purchased = True
+                                    print(
+                                        f"You have replaced your existing off hand with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(f"You decided to keep {inventory['off_hand'][0]['name']} in your Off Hand.")
+
+                        elif purchased_item['type'] == 'consumable':
+                            if len(inventory['consumables']) < 4:
+                                inventory['consumables'].append(purchased_item)
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['consumables'][0]['name']} equipped. "
+                                    f"Do you want to replace one of your items with {purchased_item['name']}? (y/n)")
+
+                                if item_replacement.lower() == 'y':
+                                    replace_slot = input("Which # item would you like to replace? ")
+                                    replace_num = int(replace_slot) - 1
+                                    if 0 <= replace_num < 4:
+                                        inventory['consumables'][replace_num] = purchased_item
+                                        item_purchased = True
+                                        print(
+                                            f"You have replaced your existing off hand with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(
+                                        f"You decided to keep {inventory['consumables'][0]['name']} in your "
+                                        f"consumables slot.")
+                    else:
+                        print("You don't have enough Gold to purchase that item.")
+                else:
+                    print("Invalid item number.")
+            except ValueError:
+                print("Invalid input. Please enter a valid item number or 'e' to exit.")
+    print(show_inventory())
+    for let in "\nCome back anytime...":
+        print(let, end='')
+        sleep(0.05)
+    sleep(1)
 
 
 def fight(enemy):
