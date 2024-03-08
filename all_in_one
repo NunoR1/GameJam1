@@ -1,0 +1,619 @@
+import random
+from time import sleep
+
+player_name = ""
+
+
+# Weapons
+weapon_oldsword = {"name":"Old Sword", "attack":3, "gold_value":5, "type":"weapon", "magic_mod":1}
+weapon_goodsword = {"name":"Sword", "attack":6, "gold_value":12, "type":"weapon", "magic_mod":1}
+weapon_staff = {"name":"Staff", "attack":3, "gold_value":30, "type":"weapon", "magic_mod":2.5}
+weapon_axe = {"name":"Axe", "attack":8, "gold_value":18, "type":"weapon", "magic_mod":0.8}
+weapon_spear = {"name":"Spear", "attack":7, "gold_value":15, "type":"weapon", "magic_mod":1}
+weapon_greatsword = {"name":"Greatsword", "attack":10, "gold_value":30, "type":"weapon", "magic_mod":0.5}
+weapon_magicsword = {"name":"Magic Sword", "attack":7, "gold_value":30, "type":"weapon", "magic_mod":1.75}
+
+weapons = {"Old Sword":weapon_oldsword, "Sword":weapon_goodsword, "Staff":weapon_staff, "Axe":weapon_axe, "Spear":weapon_spear, "Greatsword":weapon_greatsword, "Magic Sword":weapon_magicsword}
+
+# Armor
+armor_cloth = {"name":"Cloth Armor", "hp_buff": 5, "gold_value":5, "type":"armor"}
+armor_leather = {"name":"Leather Armor", "hp_buff": 10, "gold_value":15, "type":"armor"}
+armor_tabard = {"name":"Tabard", "hp_buff": 20, "gold_value":25, "type":"armor"}
+armor_mail = {"name":"Mail Armor", "hp_buff": 35, "gold_value":40, "type":"armor"}
+
+armors = {"Cloth Armor":armor_cloth, "Leather Armor":armor_leather, "Tabard":armor_tabard, "Mail Armor":armor_mail}
+
+# Shields
+shield_plank = {"name":"Plank Shield", "hp_buff": 5, "gold_value":7, "type":"shield"}
+shield_round = {"name":"Round Shield", "hp_buff": 10, "gold_value":15, "type":"shield"}
+shield_tower = {"name":"Tower Shield", "hp_buff": 20, "gold_value":25, "type":"shield"}
+
+shields = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower}
+
+# Spellbooks
+spell_book = {"name":"Spellbook", "offense_spell_name":"Blast", "offense_spell_damage":6, "offense_spell_cost":3, "defense_spell_name":"Heal", "defense_spell_healing":4, "defense_spell_cost": 3, "gold_value":30, "type":"spellbook"}
+
+books = {"Spellbook":spell_book}
+
+offhand = {"Plank Shield":shield_plank, "Round Shield":shield_round, "Tower Shield":shield_tower, "Spellbook":spell_book}
+
+# Consumables
+
+item_healpotion = {"name":"Healing Potion", "effect":"health_restore", "strength":10, "is_magic": False, "gold_value":8, "type":"consumable"}
+item_manapotion = {"name":"Mana Potion", "effect":"mana_restore", "strength":10, "is_magic": False, "gold_value":8, "type":"consumable"}
+item_lightningWand = {"name":"Wand of Lightnging", "effect":"damage", "strength":10, "is_magic": True, "gold_value":16, "type":"consumable"}
+item_crossbow = {"name":"Crossbow", "effect":"damage", "strength":12, "is_magic": False, "gold_value":14, "type":"consumable"}
+item_none = {"name":"None"}
+
+consumables = {"Healing Potion":item_healpotion, "Mana Potion":item_manapotion, "Lightning Wand":item_lightningWand, "Crossbow":item_crossbow, "None":item_none}
+
+item_pool = [weapon_axe, weapon_goodsword, weapon_greatsword, weapon_magicsword, weapon_oldsword, weapon_spear, weapon_staff, armor_cloth, armor_leather, armor_mail, armor_tabard, shield_plank, shield_round, shield_tower, spell_book, item_crossbow, item_healpotion, item_lightningWand, item_manapotion]
+
+
+
+player_stats = {"atk":0, "max_hp":10, "cur_hp":10, "max_mana":20, "cur_mana":0, "gold": 0, "atk_up": 0}
+
+inventory = {"main_hand": weapons["Old Sword"],
+"off_hand": offhand["Plank Shield"],
+"armor": armors["Cloth Armor"],
+"consumables1": consumables["None"],
+"consumables2": consumables["None"],
+"consumables3": consumables["None"]}
+
+Bear = {"name": "Bear", "health": 20, "damage": 5, "gold": 10},
+Wolf = {"name": "Wolf", "health": 20, "damage": 5, "gold": 10},
+Troll = {"name": "Troll", "health": 20, "damage": 5, "gold": 10},
+Goblin = {"name": "Goblin", "health": 20, "damage": 5, "gold": 10},
+Psychotic_Little_Fairy = {"name": "Psychotic Little Fairy", "health": 20, "damage": 5, "gold": 10}
+
+enemy_pool = ["Bear", "Wolf", "Troll", "Goblin", "Psychotic_Little_Fairy"]
+
+dragon = {"name":"Dragon", "health": 50, "damage": 7, "gold": 0}
+
+def fight(enemy):
+    turn_counter = 0
+    while enemy["health"] > 0 and player_stats["hp"] > 0:
+        
+        if turn_counter % 2 == 0: # Players turn
+            player_choice = input(f"What will {player_name} \nAttack \nMagic \nItems \nDefend \n--").lower()
+            
+            if player_choice == "attack":
+                print(f"{player_name} uses his weapon")
+                print(f"{enemy} loses {player_stats['atk']} health")
+            
+            elif player_choice == "magic":
+                if "Spellbook" in inventory["off_hand"]:
+                    print("Blast: 3 Mana \nHeal: 4 Mana")
+                    the_magics = input("--")
+                    if the_magics == "Blast" and player_stats["cur_mana"] >= 3:
+                        enemy["health"] -= offhand["Spellbook"["offense_spell_damage"]] * inventory["main_hand"["magic_mod"]]
+                        player_stats["cur_mana"] -= 3
+                    
+                    elif the_magics == "Heal" and player_stats["cur_mana"] >= 4:
+                        player_stats["cur_hp"] += offhand["Spellbook"["defense_spell_healing"]] * inventory["main_hand"["magic_mod"]]
+                        player_stats["cur_mana"] -= 4
+
+                    else:
+                        print("You don't have enough mana")
+
+                else:
+                    print("You have no spellbooks")
+                    continue
+            
+            elif player_choice == "items":
+                show_inventory()
+                print(f"What will {player_name} use?")
+                item_choice = input("--").capitalize()  # what the player wants
+                if item_choice in inventory["consumables1"]["name"]:
+                    print(f"{player_name} uses {item_choice}")
+                    
+                    if item_choice == "Healing Potion":
+                        player_stats["cur_hp"] += consumables["Healing Potion"["strength"]]
+                        if player_stats["cur_hp"] > player_stats["max_hp"]:  # Make sure that there is a mana cap
+                            player_stats["cur_hp"] = player_stats["max_hp"]
+                        inventory["consumables1"] = consumables["None"]
+                    
+                    elif item_choice == "Mana Potion":
+                        player_stats["cur_mana"] += consumables["Mana Potion"["strength"]]
+                        if player_stats["cur_mana"] > player_stats["max_mana"]:  # Make sure that there is a mana cap
+                            player_stats["cur_mana"] = player_stats["max_mana"]
+                        inventory["consumables1"] = consumables["None"]
+                    elif item_choice == "Wand of Lightning":
+                        enemy["health"] -= consumables["Lightning Wand"["strength"]] * inventory["main_hand"["magic_mod"]]
+                        inventory["consumables1"] = consumables["None"]
+                    elif item_choice == "Crossbow":
+                        enemy["health"] -= consumables["Crossbow"["strength"]]
+                        inventory["consumables1"] = consumables["None"]
+                    
+                    continue
+
+                elif item_choice in inventory["consumables2"]["name"]:
+                    print(f"{player_name} uses {item_choice}")
+                    
+                    if item_choice == "Healing Potion":
+                        player_stats["cur_hp"] += consumables["Healing Potion"["strength"]]
+                        if player_stats["cur_hp"] > player_stats["max_hp"]:  # Make sure that there is a mana cap
+                            player_stats["cur_hp"] = player_stats["max_hp"]
+                        inventory["consumables2"] = consumables["None"]
+                    
+                    elif item_choice == "Mana Potion":
+                        player_stats["cur_mana"] += consumables["Mana Potion"["strength"]]
+                        if player_stats["cur_mana"] > player_stats["max_mana"]:  # Make sure that there is a mana cap
+                            player_stats["cur_mana"] = player_stats["max_mana"]
+                        inventory["consumables2"] = consumables["None"]
+                    elif item_choice == "Wand of Lightning":
+                        enemy["health"] -= consumables["Lightning Wand"["strength"]] * inventory["main_hand"["magic_mod"]]
+                        inventory["consumables2"] = consumables["None"]
+                    
+                    elif item_choice == "Crossbow":
+                        enemy["health"] -= consumables["Crossbow"["strength"]]
+                        inventory["consumables2"] = consumables["None"]
+                        
+                    continue
+
+                elif item_choice in inventory["consumables3"]["name"]:
+                    print(f"{player_name} uses {item_choice}")
+                    
+                    if item_choice == "Healing Potion":
+                        player_stats["cur_hp"] += consumables["Healing Potion"["strength"]]
+                        if player_stats["cur_hp"] > player_stats["max_hp"]:  # Make sure that there is a mana cap
+                            player_stats["cur_hp"] = player_stats["max_hp"]
+                        inventory["consumables3"] = consumables["None"]
+                    
+                    elif item_choice == "Mana Potion":
+                        player_stats["cur_mana"] += consumables["Mana Potion"["strength"]]
+                        if player_stats["cur_mana"] > player_stats["max_mana"]:  # Make sure that there is a mana cap
+                            player_stats["cur_mana"] = player_stats["max_mana"]
+                        inventory["consumables3"] = consumables["None"]
+
+                    elif item_choice == "Wand of Lightning":
+                        enemy["health"] -= consumables["Lightning Wand"["strength"]] * inventory["main_hand"["magic_mod"]]
+                        inventory["consumables3"] = consumables["None"]
+                    
+                    elif item_choice == "Crossbow":
+                        enemy["health"] -= consumables["Crossbow"["strength"]]
+                        inventory["consumables3"] = consumables["None"]
+                    
+                    continue
+                
+                else:
+                    print(f"You don't have {item_choice}")
+                    continue
+            
+            else:
+                print("Not possible")
+        
+        
+        else: # Enemy turn
+            print(f"{enemy} attacks")
+            hurt = enemy["damage"] * random.randint(0,3)  # multiplies the damage value the enemy deals by a random value 0-3 so that it can miss, do a light, medium, or heavy
+            if hurt != 0:
+                print(f"{enemy} dealt {hurt} damage")
+                player_stats["cur_hp"] - hurt
+            else:
+                print(f"{enemy} missed")
+    
+        turn_counter += 1
+    if enemy["health"] <= 0:
+        print(f"{player_name} has turned out victorious")
+    else:
+        game_over()
+
+def show_inventory():
+    print(f"Main Hand: {inventory['main_hand']["name"]}\nOff Hand: {inventory['off_hand']["name"]}\nArmor: {inventory['armor']["name"]}\nConsumables: {inventory['consumables1']['name']}, {inventory['consumables2']['name']}, {inventory['consumables3']['name']}\nMoney: {player_stats['gold']}")
+
+def game_over():
+    print("""                                                                                                    
+                                        %%###########                                               
+                                     %%#########%%###%                                              
+                                  %%%%%%%%%%%%#########%                                            
+                               %%%%%%%%%#*++*#####%%%###%                                           
+                             %%%%%%%%%%#*+++==+++#%%%%%%%%                                    ++    
+                            %%%%%%%%%%%*+**+=====+#%%%%%%%                         %   +===+++====+ 
+                            %%%%%#%%%%%%*+++=====+#%%%%%%%%%%###%%%###%####%%%#########=-----=+***+ 
+                                ##%%%%@%%*+++===*#%%%%%%%%%%###%#%%%%%%####%#%%%%######=----=+++    
+                                   %%%@@@%#*++*%%%%%%%%%%%%%###%%%##%%#########%######              
+                                     @@@@@@@@@@@%%%%%%%%%%%%%###%######%######%                     
+     **++                             %%%%%%%%%%%%%%%%%%%%%%%%##########%%                          
+    *+***++                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%##                                   
+    +++**+==++++               %%%%%%%%%%%%%@%%%%%%%%%%%%%%%%%%###                                  
+    ==+++========+++++++   %%%%%%%%%%%%%%%%%@%%%%%%%%%%%%%%%%%%###                                  
+           ++============+*%%%%%%%%%%%%%%@%@%%%%%%%%%%%%%%%%%%####                                  
+               ++===========*%%%%%%%%%%%%@%%@@%%%%%%%%%%%%%%%%####                                  
+                    ++======*%%%%%%%%      %@@%%%%%%%%%%%%%%%#####                                  
+                                             @%%%%%%%%%%%%%%%%####                                  
+                                              %@%%%%%%%%%%%%%%%###                                  
+                                              @@%%%%%%%###########                                  
+                                              @@@%%%%%#####*+===**                                  
+                                              @@@%%@@@@@%%%%%%%#+#                                  
+                                  %%%%%%%%@@@@@@@%%%%%%%%%%%%%##%#                                  
+                      %%%%%%%%%%%%%%%%%%%%%%@@@%@@@@@%%%%%%#%%####                                  
+                    %%%%%%%%%%%%%%%%%%%%%%@@@@%%@@%%%%%%%#%%######                                  
+                    %%%%%%%%%%%%%%%%%%%%%%@@@@@@@@%%%%%%%%%%%#####                                  
+                    %%%%%%%%%%%%%%%%%%%%%@@@@@@@@%%%%%%%%%%%%%####                                  
+                    %%%%%%%%%%%%%%%%%%%%%@@@@@@@%%%%%%%%#########                                   
+                      %%%%%%%%%%%@@@%%%%@@@@@@@%%##%#############                                   
+                       %%%%%%%%%%%@        @%%%%%#######%%#####%                                    
+                        %%%%%%%%%%@@         %%%#######%%#%###                                      
+                          %%%%%%%%%@@       %%%%######%%####                                        
+                           %%%%%%%@@@     @%%%######%####                                           
+                            %%%%%%@@@@@   %%%%%####%####                                            
+                             %%%%%%@@@@@ %%%%%#%%%#####                                             
+                              %%%%%@@@%%%%####%%%#####                                              
+                               %%%%%%%######%%%%%###                                                
+                                %%%##%%%%%%%%%%###                                                  
+                                 ##%%%%##%%%%%%%#                                                   
+                                 **#*#%%%%%%%%%%#%                                                  
+                                 +*#+*#%%%%%%%%%###                                                 
+                                 +**++*#%%%%%%%%%####                                               
+                                  #%%#*#%%%%%%%%%%%###                                              
+                                  %%#*####%%%%%%%%%%###                                             
+                                  ##*####% %%%%%%#######                                            
+                                 %#*####     %%%#########                                           
+                                  *####        %##########                                          
+                                                %##########                                         
+                                                 %%#########                                        
+                                                   %#########% ##*#                                 
+                                                    %########*##*=+                                 
+                                                      #######*##*--+                                
+                                                       ####***##+:--                                
+                                                        *****###+:::                                
+                                                       #*+*##*+--:::                                
+                                                        ===++-++-::-                                
+                                                          ++*=-++-:-                                
+                                                           +**+=++--                                
+                                                            *#####--                                
+                                                            ######-=                                
+                                                             %%###-+                                
+                                                             %%##+-                                 
+                                                             %###=+                                 
+                                                              %#++                                  
+                                                                                                    """)
+    sleep(2)
+    print("You have met a terrible fate.")
+    restart = input("Restart?\nYes         No\n--").lower()
+    if restart == "yes":
+        main()
+    else:
+        pass
+
+
+def main():
+    rooms_completed = 0
+    player_name = game_start()
+    while player_stats["cur_hp"] > 0:
+        show_inventory()
+        print("-------------------------------------------")
+        next_room(rooms_completed)
+        print("-------------------------------------------")
+        rooms_completed += 1
+
+
+def game_start():
+    # Opening dialogue
+    print("You are in a path in the woods.")
+    sleep(1)
+    print("The darkness of the forest looms around you.")
+    sleep(1)
+    print("You are on a quest to slay a dragon")
+    sleep(1)
+    print("The end of the path is nearing")
+    sleep(1)
+    print("You stumble upon a cabin")
+    print("Within the cabin there is an old man.")
+    player_name = input('"What is your name young traveler?"\n--')
+    print(f'"{player_name}"')
+    sleep(1)
+    print('"That is a wonderful name."')
+    sleep(1)
+    print(f'"This is a treacherous path, {player_name}"')
+    return player_name
+
+
+
+room_types = ["monster", "merchant", "treasure", "campfire" "trial", "boss"]
+
+
+def monster_room():
+    # encounter a random enemy, win for a reward
+    monster = enemy_pool[random.randint(0,4)]
+    print("A", monster['name'], "stands before you. It must be defeated if you wish to complete your quest")
+    fight(monster)
+    print(f"The{monster["name"]} has been defeated, you gained {monster["gold"]} gold!")
+    player_stats["gold"] += monster["gold"]
+    
+
+def merchant_room():
+    print("You come across a merchant resting by a fire. He turns to you and speaks")
+    for let in "\nWelcome tired traveler...":
+        print(let, end='')
+        sleep(0.05)
+    sleep(1)
+    for let in "\nTake a look around and see if you fancy an item...":
+        print(let, end='')
+        sleep(0.05)
+    sleep(1)
+
+    print("\n\nSHOP ITEMS")
+    print("----------")
+
+    current_items = []
+    current_count = 0
+    while current_count != 6:
+        current_count += 1
+        random_item = random.choice(list(item_pool))
+        if random_item in current_items:
+            pass
+        else:
+            current_items.append(random_item)
+
+    item_num = 0
+    for item in current_items:
+        item_num += 1
+        print(f"{item_num}.", item["name"], "-", item["gold_value"], "Gold")
+
+    print("----------")
+
+    while True:
+        purchase = input("Which # item would you like to buy? (or e to exit) \n--")
+        if purchase.lower() == 'e':
+            item_purchased = False
+            break
+        else:
+            try:
+                purchase_num = int(purchase) - 1
+                if 0 <= purchase_num < len(current_items):
+                    purchased_item = current_items[purchase_num]
+                    if player_stats['gold'] >= purchased_item['gold_value']:
+                        if purchased_item['type'] == 'weapon':
+                            if inventory['main_hand'] == "0":
+                                inventory['main_hand'] = purchased_item
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                player_stats['gold'] -= purchased_item['gold_value']
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['main_hand']['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)\n")
+                                if item_replacement.lower() == 'y':
+                                    inventory['main_hand'] = purchased_item
+                                    item_purchased = True
+                                    print(
+                                        f"You have replaced your existing weapon with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                    player_stats['gold'] -= purchased_item['gold_value']
+                                else:
+                                    print(
+                                        f"You decided to keep {inventory['main_hand']['name']} in your weapon slot.")
+
+                        elif purchased_item['type'] == 'armor':
+                            if inventory['armor'] == "":
+                                inventory['armor'] = purchased_item
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                player_stats['gold'] -= purchased_item['gold_value']
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['armor']['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)\n")
+                                if item_replacement.lower() == 'y':
+                                    inventory['armor'] = purchased_item
+                                    item_purchased = True
+                                    player_stats['gold'] -= purchased_item['gold_value']
+                                    print(
+                                        f"You have replaced your existing armor with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(f"You decided to keep {inventory['armor']['name']} in your armor slot.")
+
+                        elif purchased_item['type'] == 'shield' or purchased_item['type'] == 'spellbook':
+                            if inventory['off_hand'] == "":
+                                inventory['off_hand'] = purchased_item
+                                item_purchased = True
+                                print(
+                                    f"Fine choice traveller... You have purchased {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                player_stats['gold'] -= purchased_item['gold_value']
+                            else:
+                                item_replacement = input(
+                                    f"It seems that you already have {inventory['off_hand']['name']} equipped. Do you want to replace it with {purchased_item['name']}? (y/n)\n")
+                                if item_replacement.lower() == 'y':
+                                    inventory['off_hand'] = purchased_item
+                                    player_stats['gold'] -= purchased_item['gold_value']
+                                    item_purchased = True
+                                    print(
+                                        f"You have replaced your existing off hand with {purchased_item['name']} for {purchased_item['gold_value']} Gold.")
+                                else:
+                                    print(f"You decided to keep {inventory['off_hand']['name']} in your Off Hand.")
+
+                        elif purchased_item['type'] == 'consumable':
+                            if inventory["consumables1"] == "None":
+                                print(f"You put the {purchased_item["name"]} in your bag")
+                                inventory["consumables1"] = purchased_item
+                                break
+                            elif inventory["consumables2"] == "None":
+                                print(f"You put the {purchased_item["name"]} in your bag")
+                                inventory["consumables2"] = purchased_item
+                                break
+                            elif inventory["consumables3"] == "None":
+                                print(f"You put the {purchased_item["name"]} in your bag")
+                                inventory["consumables3"] = purchased_item
+                                break
+                            else:
+                                print(f"You don't have enough space in your bag for the {purchased_item["name"]}. What do you want to get rid of?")
+                                while True:
+                                    replace_slot = input("1 , 2, or 3?\n")
+                                    if "1" in replace_slot:
+                                        print(f"You put the {purchased_item["name"]} in your bag. You dropped your {inventory["consumables1"]}.")
+                                        inventory["consumables1"] = purchased_item
+                                        break
+                                    elif "2" in replace_slot:
+                                        print(f"You put the {purchased_item["name"]} in your bag. You dropped your {inventory["consumables2"]}.")
+                                        inventory["consumables2"] = purchased_item
+                                        break
+                                    elif "3" in replace_slot:
+                                        print(f"You put the {purchased_item["name"]} in your bag. You dropped your {inventory["consumables3"]}.")
+                                        inventory["consumables3"] = purchased_item
+                                        break
+                                    else:
+                                        print("That is not a valid slot, try again.")
+                    else:
+                        print("You don't have enough Gold to purchase that item.")
+                else:
+                    print("Invalid item number.")
+            except ValueError:
+                print("Invalid input. Please enter a valid item number or 'e' to exit.")
+    print(show_inventory())
+    for let in "\nCome back anytime...":
+        print(let, end='')
+        sleep(0.05)
+    sleep(1)
+    
+
+def treasure_room():
+    print("It appears some unfortunate would-be adventurer left some equipment here, perhaps you can find something of use...")
+
+    item_count = random.randint(1,3)
+    print(f"You found {item_count} items in the pack.")
+    for item in range(item_count):
+        found_item = random.choice(item_pool)
+        print(f"You found a {found_item["name"]}, shall you take it? (overides current item)")
+        while True:
+            accept = input("Yes/No\n").lower()
+            if accept == "yes":
+                if found_item["type"] == "weapon":
+                    print(f"You equipped the {found_item["name"]}")
+                    inventory["main_hand"] = found_item
+                    break
+                elif found_item["type"] == "armor":
+                    print(f"You equipped the {found_item["name"]}")
+                    inventory["armor"] = found_item
+                    break
+                elif found_item["type"] == "shield" or found_item["type"] == "spellbook":
+                    print(f"You equipped the {found_item["name"]}")
+                    inventory["off_hand"] = found_item
+                    break
+                elif found_item["type"] == "consumable":
+                    if inventory["consumables1"] == "None":
+                        print(f"You put the {found_item["name"]} in your bag")
+                        inventory["consumables1"] = found_item
+                        break
+                    elif inventory["consumables2"] == "None":
+                        print(f"You put the {found_item["name"]} in your bag")
+                        inventory["consumables2"] = found_item
+                        break
+                    elif inventory["consumables3"] == "None":
+                        print(f"You put the {found_item["name"]} in your bag")
+                        inventory["consumables3"] = found_item
+                        break
+                    else:
+                        print(f"You don't have enough space in your bag for the {found_item["name"]}. What do you want to get rid of?")
+                        while True:
+                            replace_slot = input("1 , 2, or 3?\n")
+                            if "1" in replace_slot:
+                                print(f"You put the {found_item["name"]} in your bag. You dropped your {inventory["consumables1"]}.")
+                                inventory["consumables1"] = found_item
+                                break
+                            elif "2" in replace_slot:
+                                print(f"You put the {found_item["name"]} in your bag. You dropped your {inventory["consumables2"]}.")
+                                inventory["consumables2"] = found_item
+                                break
+                            elif "3" in replace_slot:
+                                print(f"You put the {found_item["name"]} in your bag. You dropped your {inventory["consumables3"]}.")
+                                inventory["consumables3"] = found_item
+                                break
+                            else:
+                                print("That is not a valid slot, try again.")
+
+                        break
+            elif accept == "no":
+                print(f"You left the {found_item["name"]} behind.")
+                break
+            else:
+                print("Invalid input, try again")
+    print("You found nothing else of value, and set off again towards the dragon's den.")
+    
+            
+
+                    
+
+
+def trial_room():
+    # if the player completes a trial, gain a buff
+    trial_list = ["wealth", "vitality"]
+    trial_type = random.choice(trial_list)
+
+    # Trial of Wealth: have a certain amount of gold
+    if trial_type == "wealth":
+        print("The ghost of a long-dead merchant floats before you \"Traveler,\" he says, \"I offer the trial of wealth, carry 55 gold and recieve my boon.\"")
+        input("Press any key to commence the trial of wealth\n")
+        if player_stats["gold"] >= 55:
+            print("The merchant nods, \"You have passed my test, you may receive my boon. The blessing of life\"")
+            print("MAX HP INCREASED")
+            player_stats["max_hp"] += 15
+        else:
+            print("The merchant frowns, \"You do not have enough gold, you cannot receive my boon.\"")
+    
+    # Trial of Vitality: have a certain amount of health
+    if trial_type == "vitality":
+        print("The ghost of a slain knight floats before you \"Traveler,\" he says, \"I offer the trial of vitality, possess 50 max health and recieve my boon.\"")
+        input("Press any key to commence the trial of vitality\n")
+        if player_stats["max_hp"] >= 50:
+            print("\"You have passed my test, traveler.\" The knight bows his head, \"With the boon of strength, your blow shall strike true. May you succeed where I have failed, slay that monster.\"")
+            print("DAMAGE INCREASED")
+            player_stats["atk_up"] += 5
+        else:
+            print("\"I apologize,\" the knight says, \"you lack the endurance to receive my blessing.\"")
+    
+
+def boss_room():
+    print("One way the other, this is where your journy ends, at the maw of the dragon's den. Your great foe stands before you, eager for battle.")
+    fight(dragon)
+    
+
+def campfire_room():
+    # restore health and mana
+    print("You come across an abandoned campsite, this looks to be a safe place to rest and recover.")
+    input("Press any key to continue\n")
+    player_stats["cur_hp"] = player_stats["max_hp"]
+    player_stats["cur_mana"] = player_stats["max_mana"]
+    
+
+room_pool = ["monster", "merchant", "treasure", "campfire"]
+
+def next_room(rooms_completed):
+    
+    if rooms_completed == 0:
+        treasure_room()
+    elif rooms_completed <= 9:
+        room_option_1 = random.choice(room_pool)
+        room_option_2 = random.choice(room_pool)
+        print(f"Two roads lie before you, one the left path, you will find a {room_option_1}, on the right path you will find a {room_option_2}, which way do you go?")
+        which_way = input("left or right?\n")
+        if which_way.lower() == "left":
+            if room_option_1 == "monster":
+                monster_room()
+            elif room_option_1 == "merchant":
+                merchant_room()
+            elif room_option_1 == "treasure":
+                treasure_room()
+            elif room_option_1 == "campfire":
+                campfire_room()
+        elif which_way.lower() == "right":
+            if room_option_2 == "monster":
+                monster_room()
+            elif room_option_2 == "merchant":
+                merchant_room()
+            elif room_option_2 == "treasure":
+                treasure_room()
+            elif room_option_2 == "campfire":
+                campfire_room()
+        else:
+            print(f"{which_way} is not left or right, try again.")
+    elif rooms_completed == 10:
+        trial_room()
+    elif rooms_completed == 11:
+        campfire_room()
+    elif rooms_completed == 12:
+        boss_room()
+    
+
+
+main()
