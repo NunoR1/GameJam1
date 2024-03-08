@@ -18,8 +18,8 @@ def monster_room():
     main.playerstats["gold"] += monster["gold"]
 
 def merchant_room():
-    pass
-    # encounter a merchant that sells random items
+    print("You come across a merchant resting by a fire. He turns to you and speaks")
+    main.merchant()
 
 def treasure_room():
     print("It appears some unfortunate would-be adventurer left some equipment here, perhaps you can find something of use...")
@@ -99,8 +99,8 @@ def campfire_room():
     # restore health and mana
     print("You come across an abandoned campsite, this looks to be a safe place to rest and recover.")
     input("Press any key to continue")
-    player_stats["cur_hp"] = player_stats["max_hp"]
-    player_stats["cur_mana"] = player_stats["max_mana"]
+    main.player_stats["cur_hp"] = main.player_stats["max_hp"]
+    main.player_stats["cur_mana"] = main.player_stats["max_mana"]
 
 room_pool = ["monster", "merchant", "treasure", "campfire"]
 
