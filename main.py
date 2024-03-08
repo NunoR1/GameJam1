@@ -1,11 +1,11 @@
 from time import sleep
 import random
-import items
+from items import weapons, offhand, armors, consumables
 
 player_stats = {"atk":0, "max_hp":10, "cur_hp":10, "max_mana":0, "cur_mana":0, "gold": 0, "atk_up": 0}
-inventory = {"main_hand": [items.weapons["Old Sword"]],
-"off_hand": [items.offhand["Plank Shield"]],
-"armor": [items.armor["Cloth Armor"]],
+inventory = {"main_hand": [weapons["Old Sword"]],
+"off_hand": [offhand["Plank Shield"]],
+"armor": [armors["Cloth Armor"]],
 "consumables": []}
 
 
@@ -50,7 +50,7 @@ def fight(enemy):
     turn_counter = 0
     while enemy["health"] > 0 and player_stats["hp"] > 0:
         
-        if 0 % 2 == 0: # Players turn
+        if turn_counter % 2 == 0: # Players turn
             player_choice = input(f"What will {player_name} \nAttack \nMagic \nItems \nDefend \n--").lower()
             
             if player_choice == "attack":
@@ -62,11 +62,11 @@ def fight(enemy):
                     print("Blast: 3 Mana \nHeal: 4 Mana")
                     the_magics = input("--")
                     if the_magics == "Blast" and player_stats["cur_mana"] >= 3:
-                        enemy["health"] -= items.spell_book["offense_spell_damage"] * inventory["main_hand"["magic_mod"]]
+                        enemy["health"] -= offhand["Spellbook"["offense_spell_damage"]] * inventory["main_hand"["magic_mod"]]
                         player_stats["cur_mana"] -= 3
                     
                     elif the_magics == "Heal" and player_stats["cur_mana"] >= 4:
-                        player_stats["cur_hp"] += items.spell_book["defense_spell_healing"] * inventory["main_hand"["magic_mod"]]
+                        player_stats["cur_hp"] += offhand["Spellbook"["defense_spell_healing"]] * inventory["main_hand"["magic_mod"]]
                         player_stats["cur_mana"] -= 4
 
                     else:
@@ -84,20 +84,20 @@ def fight(enemy):
                     print(f"{player_name} uses {item_choice}")
                     
                     if item_choice == "Healing Potion":
-                        player_stats["cur_hp"] += items.consumables["Healing Potion"["strength"]]
+                        player_stats["cur_hp"] += consumables["Healing Potion"["strength"]]
                         if player_stats["cur_hp"] > player_stats["max_hp"]:  # Make sure that there is a mana cap
                             player_stats["cur_hp"] = player_stats["max_hp"]
                     
                     elif item_choice == "Mana Potion":
-                        player_stats["cur_mana"] += items.consumables["Mana Potion"["strength"]]
+                        player_stats["cur_mana"] += consumables["Mana Potion"["strength"]]
                         if player_stats["cur_mana"] > player_stats["max_mana"]:  # Make sure that there is a mana cap
                             player_stats["cur_mana"] = player_stats["max_mana"]
                     
                     elif item_choice == "Wand of Lightning":
-                        enemy["health"] -= items.consumables["Lightning Wand"["strength"]] * inventory["main_hand"["magic_mod"]]
+                        enemy["health"] -= consumables["Lightning Wand"["strength"]] * inventory["main_hand"["magic_mod"]]
                     
                     elif item_choice == "Crossbow":
-                        enemy["health"] -= items.consumables["Crossbow"["strength"]] * inventory["main_hand"["magic_mod"]]
+                        enemy["health"] -= consumables["Crossbow"["strength"]] * inventory["main_hand"["magic_mod"]]
                     continue
                 
                 else:
@@ -201,5 +201,4 @@ def game_over():
 
 
 player_name = game_start()
-game_over()
 main()    
