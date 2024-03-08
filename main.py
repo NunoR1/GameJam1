@@ -46,7 +46,6 @@ def show_inventory():
 
 
 def fight(enemy):
-    print(f"You encounter {enemy}")
     turn_counter = 0
     while enemy["health"] > 0 and player_stats["hp"] > 0:
         
